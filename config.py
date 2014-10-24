@@ -1,0 +1,9 @@
+USERNAME = ''
+PASSWORD = ''
+
+LOGIN_URL = ''
+
+USERNAME_XPATH = ''
+
+PASSWORD_XPATH = ''
+
