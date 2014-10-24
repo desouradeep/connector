@@ -20,12 +20,12 @@ def log(sentence):
 
 def create_driver():
     log("Creating webdriver")
-    chromedriver_filename = 'chromedriver'
-    CHROME_DRIVER = os.path.join(os.getcwd(), chromedriver_filename)
-    driver = webdriver.Chrome(CHROME_DRIVER)
-    #phantomjs_filename = 'phantomjs'
-    #phantomjs_location = os.path.join(os.getcwd(), phantomjs_filename)
-    #driver = webdriver.PhantomJS(phantomjs_location)
+    #chromedriver_filename = 'chromedriver'
+    #CHROME_DRIVER = os.path.join(os.getcwd(), chromedriver_filename)
+    #driver = webdriver.Chrome(CHROME_DRIVER)
+    phantomjs_filename = 'phantomjs'
+    phantomjs_location = os.path.join(os.getcwd(), phantomjs_filename)
+    driver = webdriver.PhantomJS(phantomjs_location)
     return driver
 
 
@@ -60,23 +60,19 @@ def connect():
 
     password_xpath = config.PASSWORD_XPATH
 
-    submit_xpath = config.SUBMIT_XPATH
-
     try:
         username_elem = driver.find_element_by_xpath(username_xpath)
         password_elem = driver.find_element_by_xpath(password_xpath)
-        submit_elem = driver.find_element_by_xpath(submit_xpath)
     except Exception:
         log("Couldn't find elements by xpath")
         return
 
     log("Filling login credentials")
-
     try:
         username_elem.send_keys(USERNAME)
         password_elem.send_keys(PASSWORD)
         log("Authenticating")
-        submit_elem.send_keys(Keys.RETURN)
+        password_elem.send_keys(Keys.RETURN)
     except Exception:
         log("Couldn't send authentcation keys")
         return
