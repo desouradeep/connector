@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import json
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep, ctime
@@ -7,6 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 import os
 import config
 import credentials
+from utils import push_to_queue
 
 DEFAULT_COLOR = '\033[0m'
 NOTIFY_COLOR = '\033[93m'
@@ -22,13 +24,14 @@ def create_driver():
     chromedriver_filename = 'chromedriver'
     CHROME_DRIVER = os.path.join(os.getcwd(), chromedriver_filename)
     driver = webdriver.Chrome(CHROME_DRIVER)
-    #phantomjs_filename = 'phantomjs'
-    #phantomjs_location = os.path.join(os.getcwd(), phantomjs_filename)
-    #driver = webdriver.PhantomJS(phantomjs_location)
+    # phantomjs_filename = 'phantomjs'
+    # phantomjs_location = os.path.join(os.getcwd(), phantomjs_filename)
+    # driver = webdriver.PhantomJS(phantomjs_location)
     return driver
 
 
 def authenticate():
+    log("Authenticating")
     driver.get(config.ADMIN_URL)
 
     username = driver.find_element_by_id("login_n")
@@ -44,6 +47,7 @@ def authenticate():
 
 driver = create_driver()
 authenticate()
+iteration_no = 1
 
 while True:
     try:
@@ -87,8 +91,16 @@ while True:
             usage_dict[ip]['tcp'] = tcp
             usage_dict[ip]['udp'] = udp
 
-        for i, j in sorted(usage_dict.iteritems()):
-            print i + "\t" + str(j)
+        push_to_queue(
+            queue='internet_usage',
+            payload=usage_dict,
+        )
+
+        log("Iteration no.: " + str(iteration_no))
+        iteration_no += 1
+        for key, value in sorted(usage_dict.iteritems()):
+            log(key + "\t" + json.dumps(value))
+
         print
 
     except NoSuchElementException:
