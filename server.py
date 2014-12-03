@@ -53,11 +53,7 @@ def callback(ch, method, properties, payload):
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-
-    return_dict = {
-    }
-
-    return render_template('index.html', **return_dict)
+    return render_template('index.html')
 
 
 ###################################

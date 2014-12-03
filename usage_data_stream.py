@@ -48,6 +48,8 @@ def authenticate():
 driver = create_driver()
 authenticate()
 iteration_no = 1
+total_consumption = 1
+client_consumption = {}
 
 while True:
     try:
@@ -88,8 +90,19 @@ while True:
             if ip not in usage_dict:
                 usage_dict[ip] = {}
 
+            if ip not in client_consumption:
+                client_consumption[ip] = 0
+
             usage_dict[ip]['tcp'] = tcp
             usage_dict[ip]['udp'] = udp
+            client_consumption[ip] += tcp + udp
+
+            usage_dict[ip]['consumption'] = client_consumption[ip]
+
+            usage_dict[ip]['consumption_percentage'] = \
+                int(float(client_consumption[ip]) / total_consumption * 100)
+
+            total_consumption += tcp + udp
 
         push_to_queue(
             queue='internet_usage',

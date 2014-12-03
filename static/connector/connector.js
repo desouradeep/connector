@@ -46,23 +46,16 @@ $(document).ready(function() {
             var total = tcp + udp;
             data.push(total);
 
-
             var percentage = total / gross_speed * 100;
             data.push(percentage.toFixed(0) + "%");
 
+            var  consumption = check_undefined_speed(details['consumption']);
+            data.push(consumption);
 
-            if( isNaN(consumption[ip]) )
-                consumption[ip] = 0;
-
-            consumption[ip] += total;
-
-            data.push(consumption[ip]);
-
-
-            var total_consumption = get_total_consumption(consumption);
-            percentage = consumption[ip] / total_consumption * 100;
-            data.push(percentage.toFixed(0) + "%");
-
+            var  consumption_percentage = check_undefined_speed(
+                details['consumption_percentage']
+            );
+            data.push(consumption_percentage + "%");
 
             html = html.concat(draw_row(data));
         }
@@ -102,14 +95,4 @@ function get_gross_speed(payload, ips) {
             check_undefined_speed(details['udp']);
     }
     return gross_speed;
-}
-
-function get_total_consumption(consumption_list) {
-    var total_consumption = 0;
-
-    var keys = Object.keys(consumption_list);
-    for( var i = 0 ; i < keys.length ; i++ ) {
-        total_consumption += consumption_list[keys[i]];
-    }
-    return total_consumption;
 }
