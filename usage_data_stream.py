@@ -6,6 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 import os
 import config
+import credentials
 
 DEFAULT_COLOR = '\033[0m'
 NOTIFY_COLOR = '\033[93m'
@@ -28,13 +29,13 @@ def create_driver():
 
 
 def authenticate():
-    driver.get("http://192.168.0.1")
+    driver.get(config.ADMIN_URL)
 
     username = driver.find_element_by_id("login_n")
-    username.send_keys(config.ROUTER_ADMIN_USERNAME)
+    username.send_keys(credentials.ROUTER_ADMIN_USERNAME)
 
     password = driver.find_element_by_id("login_pass")
-    password.send_keys(config.ROUTER_ADMIN_PASSWORD)
+    password.send_keys(credentials.ROUTER_ADMIN_PASSWORD)
 
     login = driver.find_element_by_id("Login")
     login.send_keys(Keys.RETURN)

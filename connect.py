@@ -6,6 +6,7 @@ from sys import stdout
 from selenium.common.exceptions import WebDriverException
 import os
 import config
+import credentials
 
 SLEEP_TIME = 10 * 60  # 10 minutes
 
@@ -36,8 +37,8 @@ def connect():
         log("Exception occurred while creating webdriver")
         return
 
-    USERNAME = config.USERNAME
-    PASSWORD = config.PASSWORD
+    USERNAME = credentials.INTERNET_USERNAME
+    PASSWORD = credentials.INTERNET_PASSWORD
 
     LOGIN_URL = config.LOGIN_URL
 

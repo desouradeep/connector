@@ -1,0 +1,7 @@
+# Internet login
+INTERNET_USERNAME = ''
+INTERNET_PASSWORD = ''
+
+# Router Admin login
+ROUTER_ADMIN_USERNAME = ''
+ROUTER_ADMIN_PASSWORD = ''
