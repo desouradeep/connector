@@ -1,14 +1,16 @@
 #!/usr/bin/python
+import os
 import json
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep, ctime
 from selenium.common.exceptions import NoSuchElementException
 
-import os
 import config
 import credentials
 from utils import push_to_queue
+from mac_config import DEVICE_MAC_DICT
+
 
 DEFAULT_COLOR = '\033[0m'
 NOTIFY_COLOR = '\033[93m'
@@ -69,8 +71,13 @@ while True:
 
             ip = client_data[1]
             usage_dict[ip] = {}
-            usage_dict[ip]['name'] = client_data[0]
+
             usage_dict[ip]['mac'] = client_data[2]
+
+            if usage_dict[ip]['mac'] in DEVICE_MAC_DICT:
+                usage_dict[ip]['name'] = DEVICE_MAC_DICT[usage_dict[ip]['mac']]
+            else:
+                usage_dict[ip]['name'] = client_data[0]
 
         # Get device usage from Active Sessions page
         driver.get(config.ACTIVE_SESSION_URL)
